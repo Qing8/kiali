@@ -346,7 +346,7 @@ class AuthenticationControllerComponent extends React.Component<
 
       // Show Badges: Virtual Services 
       let badgeVS = this.props.badgeVS
-      if (badgeVS != uiDefaults.graph.settings.badgevs) {
+      if (badgeVS !== uiDefaults.graph.settings.badgevs) {
         this.props.setBadgeVS(!badgeVS)
       }
     }
