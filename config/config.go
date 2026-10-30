@@ -710,6 +710,7 @@ type GraphFindOption struct {
 // Animation: animation type point (default) | dash
 type GraphSettings struct {
 	Animation string `yaml:"animation,omitempty" json:"animation,omitempty"`
+	BadgeVS   bool   `yaml:"badgevs,omitempty" json:"badgevs,omitempty"`
 }
 
 // GraphTraffic defines the protocol-specific rates used to determine traffic for graph generation.
@@ -1150,6 +1151,7 @@ func NewConfig() (c *Config) {
 					},
 					Settings: GraphSettings{
 						Animation: "point",
+						BadgeVS:   false,
 					},
 					Traffic: GraphTraffic{
 						Ambient: "total",

@@ -30,6 +30,7 @@ interface GraphTraffic {
 
 interface GraphSettings {
   animation: 'point' | 'dash';
+  badgevs: boolean,
 }
 
 interface GraphUIDefaults {

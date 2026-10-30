@@ -42,9 +42,11 @@ import {
 import { ChatAIActions } from 'actions/ChatAIActions';
 import { initializeLanguage, registerSystemLanguageListener } from 'utils/LanguageUtils';
 import type { AIConfig } from 'types/Chatbot';
+import { GraphToolbar } from 'pages/Graph/GraphToolbar/GraphToolbar';
 
 interface ReduxStateProps {
   authenticated: boolean;
+  badgeVS: boolean;
   isLoginError: boolean;
   landingRoute?: string;
 }
@@ -54,6 +56,7 @@ interface ReduxDispatchProps {
   checkCredentials: () => void;
   setActiveNamespaces: (namespaces: Namespace[]) => void;
   setAI: (ai: AIConfig) => void;
+  setBadgeVS: (badgeVS: boolean) => void;
   setDuration: (duration: DurationInSeconds) => void;
   setLandingRoute: (route: string | undefined) => void;
   setNamespaces: (namespaces: Namespace[], receivedAt: Date) => void;
@@ -340,6 +343,12 @@ class AuthenticationControllerComponent extends React.Component<
       }
 
       this.props.setTrafficRates(rates);
+
+      // Show Badges: Virtual Services 
+      let badgeVS = this.props.badgeVS
+      if (badgeVS != uiDefaults.graph.settings.badgevs) {
+        this.props.setBadgeVS(!badgeVS)
+      }
     }
   };
 
@@ -386,13 +395,15 @@ class AuthenticationControllerComponent extends React.Component<
 const mapStateToProps = (state: KialiAppState): ReduxStateProps => ({
   authenticated: state.authentication.status === LoginStatus.loggedIn,
   isLoginError: state.authentication.status === LoginStatus.error,
-  landingRoute: state.authentication.landingRoute
+  landingRoute: state.authentication.landingRoute,
+  badgeVS: state.graph.toolbarState.showVirtualServices
 });
 
 const mapDispatchToProps = (dispatch: KialiDispatch): ReduxDispatchProps => ({
   addMessage: bindActionCreators(NotificationCenterActions.addMessage, dispatch),
   checkCredentials: () => dispatch(LoginThunkActions.checkCredentials()),
   setActiveNamespaces: bindActionCreators(NamespaceActions.setActiveNamespaces, dispatch),
+  setBadgeVS: bindActionCreators(GraphToolbarActions.toggleGraphVirtualServices, dispatch),
   setDuration: bindActionCreators(UserSettingsActions.setDuration, dispatch),
   setLandingRoute: bindActionCreators(LoginActions.setLandingRoute, dispatch),
   setNamespaces: bindActionCreators(NamespaceActions.receiveList, dispatch),

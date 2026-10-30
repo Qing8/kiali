@@ -127,7 +127,8 @@ const defaultServerConfig: ComputedServerConfig = {
         findOptions: [],
         hideOptions: [],
         settings: {
-          animation: 'point'
+          animation: 'point',
+          badgevs: false,
         },
         traffic: {
           ambient: 'total',
