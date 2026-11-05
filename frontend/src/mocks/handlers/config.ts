@@ -174,6 +174,7 @@ const generateServerConfig = (): ServerConfig => {
       istioUpgradeAction: true,
       uiDefaults: {
         graph: {
+          displayMenu: {},
           findOptions: [],
           hideOptions: [],
           settings: {

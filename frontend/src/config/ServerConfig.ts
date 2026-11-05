@@ -124,11 +124,11 @@ const defaultServerConfig: ComputedServerConfig = {
     istioUpgradeAction: false,
     uiDefaults: {
       graph: {
+        displayMenu: {},
         findOptions: [],
         hideOptions: [],
         settings: {
           animation: 'point',
-          badgevs: false,
         },
         traffic: {
           ambient: 'total',

@@ -15,6 +15,12 @@ interface IstioAnnotations {
   istioInjectionAnnotation: string;
 }
 
+interface GraphDisplayMenu {
+  missingSidecars?: boolean;
+  virtualServices?: boolean;
+  security?: boolean;
+}
+
 interface GraphFindOption {
   autoSelect: boolean;
   description: string;
@@ -30,7 +36,6 @@ interface GraphTraffic {
 
 interface GraphSettings {
   animation: 'point' | 'dash';
-  badgevs: boolean,
 }
 
 interface GraphUIDefaults {
@@ -38,6 +43,7 @@ interface GraphUIDefaults {
   hideOptions: GraphFindOption[];
   settings: GraphSettings;
   traffic: GraphTraffic;
+  displayMenu: GraphDisplayMenu;
 }
 
 interface I18nUIDefaults {

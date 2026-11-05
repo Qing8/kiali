@@ -699,6 +699,16 @@ type ExtensionConfig struct {
 	Name    string `yaml:"name"` // same name used in metrics "extension" attribute
 }
 
+// GraphDisplayMenu sets the toggles under the Display drop-down menu
+type GraphDisplayMenu struct {
+	// Show Badges
+	MissingSideCars bool `yaml:"missing_sidecars,omitempty" json:"missingSidecars,omitempty"`
+	VirtualServices bool `yaml:"virtual_services,omitempty" json:"virtualServices,omitempty"`
+	Security        bool `yaml:"security,omitempty" json:"security,omitempty"`
+	// Show
+	// Show Edge Labels
+}
+
 // GraphFindOption defines a single Graph Find/Hide Option
 type GraphFindOption struct {
 	AutoSelect  bool   `yaml:"auto_select,omitempty" json:"autoSelect,omitempty"`
@@ -710,7 +720,6 @@ type GraphFindOption struct {
 // Animation: animation type point (default) | dash
 type GraphSettings struct {
 	Animation string `yaml:"animation,omitempty" json:"animation,omitempty"`
-	BadgeVS   bool   `yaml:"badgevs,omitempty" json:"badgevs,omitempty"`
 }
 
 // GraphTraffic defines the protocol-specific rates used to determine traffic for graph generation.
@@ -731,6 +740,7 @@ type GraphUIDefaults struct {
 	HideOptions []GraphFindOption `yaml:"hide_options,omitempty" json:"hideOptions,omitempty"`
 	Settings    GraphSettings     `yaml:"settings,omitempty" json:"settings,omitempty"`
 	Traffic     GraphTraffic      `yaml:"traffic,omitempty" json:"traffic,omitempty"`
+	DisplayMenu GraphDisplayMenu  `yaml:"display_menu,omitempty" json:"displayMenu,omitempty"`
 }
 
 // I18nUIDefaults defines UI Defaults specific to the I18n settings
@@ -1117,6 +1127,11 @@ func NewConfig() (c *Config) {
 			IstioUpgradeAction:    false,
 			UIDefaults: UIDefaults{
 				Graph: GraphUIDefaults{
+					DisplayMenu: GraphDisplayMenu{
+						MissingSideCars: false,
+						VirtualServices: false,
+						Security:        false,
+					},
 					FindOptions: []GraphFindOption{
 						{
 							Description: "Find: slow edges (> 1s)",
@@ -1151,7 +1166,6 @@ func NewConfig() (c *Config) {
 					},
 					Settings: GraphSettings{
 						Animation: "point",
-						BadgeVS:   false,
 					},
 					Traffic: GraphTraffic{
 						Ambient: "total",

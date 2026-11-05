@@ -46,7 +46,7 @@ import { GraphToolbar } from 'pages/Graph/GraphToolbar/GraphToolbar';
 
 interface ReduxStateProps {
   authenticated: boolean;
-  badgeVS: boolean;
+  virtualServices: boolean;
   isLoginError: boolean;
   landingRoute?: string;
 }
@@ -56,7 +56,7 @@ interface ReduxDispatchProps {
   checkCredentials: () => void;
   setActiveNamespaces: (namespaces: Namespace[]) => void;
   setAI: (ai: AIConfig) => void;
-  setBadgeVS: (badgeVS: boolean) => void;
+  setVirtualService () => void;
   setDuration: (duration: DurationInSeconds) => void;
   setLandingRoute: (route: string | undefined) => void;
   setNamespaces: (namespaces: Namespace[], receivedAt: Date) => void;
@@ -344,10 +344,27 @@ class AuthenticationControllerComponent extends React.Component<
 
       this.props.setTrafficRates(rates);
 
-      // Show Badges: Virtual Services 
-      let badgeVS = this.props.badgeVS
-      if (badgeVS !== uiDefaults.graph.settings.badgevs) {
-        this.props.setBadgeVS(!badgeVS)
+      // TODO (qing): display menu overwrite
+      const displayMenu = uiDefaults.graph.displayMenu ?? {};
+      const options: Record<
+      string, {currentValue:boolean; toggle: ()=>void}>={
+        virtual_services: {
+          currentValue: this.props.virtualServices,
+          toggle: () => this.props.setVirtualService()
+        }
+      };
+
+      for (const [name, configuredValue] of Object.entries(displayMenu)) {
+        const option = options[name]
+        // if we don't recognize user-specified `name`, warn it but don't error on it
+        if (!Object.hasOwn(option, name)) {
+          console.warn(`Ignoring unsupported UI Default: displayMenu [${name}]`)
+          continue;
+        }
+        // Apply the override only when it differs from the current graph state.
+        if (option.currentValue !== configuredValue) {
+          option.toggle();
+        }
       }
     }
   };
@@ -396,7 +413,7 @@ const mapStateToProps = (state: KialiAppState): ReduxStateProps => ({
   authenticated: state.authentication.status === LoginStatus.loggedIn,
   isLoginError: state.authentication.status === LoginStatus.error,
   landingRoute: state.authentication.landingRoute,
-  badgeVS: state.graph.toolbarState.showVirtualServices
+  virtualServices: state.graph.toolbarState.showVirtualServices
 });
 
 const mapDispatchToProps = (dispatch: KialiDispatch): ReduxDispatchProps => ({
