@@ -700,14 +700,7 @@ type ExtensionConfig struct {
 }
 
 // GraphDisplayMenu sets the toggles under the Display drop-down menu
-type GraphDisplayMenu struct {
-	// Show Badges
-	MissingSideCars bool `yaml:"missing_sidecars,omitempty" json:"missingSidecars,omitempty"`
-	VirtualServices bool `yaml:"virtual_services,omitempty" json:"virtualServices,omitempty"`
-	Security        bool `yaml:"security,omitempty" json:"security,omitempty"`
-	// Show
-	// Show Edge Labels
-}
+type GraphDisplayMenu map[string]bool
 
 // GraphFindOption defines a single Graph Find/Hide Option
 type GraphFindOption struct {

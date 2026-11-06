@@ -49,6 +49,8 @@ interface ReduxStateProps {
   virtualServices: boolean;
   isLoginError: boolean;
   landingRoute?: string;
+  security: boolean;
+  missingSidecars:boolean;
 }
 
 interface ReduxDispatchProps {
@@ -56,11 +58,13 @@ interface ReduxDispatchProps {
   checkCredentials: () => void;
   setActiveNamespaces: (namespaces: Namespace[]) => void;
   setAI: (ai: AIConfig) => void;
-  setVirtualService () => void;
+  toggleVirtualService: () => void;
   setDuration: (duration: DurationInSeconds) => void;
   setLandingRoute: (route: string | undefined) => void;
   setNamespaces: (namespaces: Namespace[], receivedAt: Date) => void;
   setRefreshInterval: (interval: IntervalInMilliseconds) => void;
+  toggleSecurity: () => void;
+  toggleMissingSidecars: () => void;
   setTracingInfo: (tracingInfo: TracingInfo | null) => void;
   setTrafficRates: (rates: TrafficRate[]) => void;
   statusRefresh: (statusState: StatusState) => void;
@@ -344,20 +348,29 @@ class AuthenticationControllerComponent extends React.Component<
 
       this.props.setTrafficRates(rates);
 
-      // TODO (qing): display menu overwrite
       const displayMenu = uiDefaults.graph.displayMenu ?? {};
       const options: Record<
       string, {currentValue:boolean; toggle: ()=>void}>={
-        virtual_services: {
+        missingSidecars: {
+          currentValue: this.props.missingSidecars,
+          toggle: () => this.props.toggleMissingSidecars
+        },
+        security: {      
+          currentValue: this.props.missingSidecars,
+          toggle: () => this.props.toggleSecurity},
+        virtualServices: {
           currentValue: this.props.virtualServices,
-          toggle: () => this.props.setVirtualService()
-        }
+          toggle: () => this.props.toggleVirtualService()
+        },
+       
+        
+
       };
 
       for (const [name, configuredValue] of Object.entries(displayMenu)) {
         const option = options[name]
         // if we don't recognize user-specified `name`, warn it but don't error on it
-        if (!Object.hasOwn(option, name)) {
+        if (!Object.hasOwn(options, name)) {
           console.warn(`Ignoring unsupported UI Default: displayMenu [${name}]`)
           continue;
         }
@@ -413,22 +426,27 @@ const mapStateToProps = (state: KialiAppState): ReduxStateProps => ({
   authenticated: state.authentication.status === LoginStatus.loggedIn,
   isLoginError: state.authentication.status === LoginStatus.error,
   landingRoute: state.authentication.landingRoute,
-  virtualServices: state.graph.toolbarState.showVirtualServices
+  virtualServices: state.graph.toolbarState.showVirtualServices,
+  security: state.graph.toolbarState.showSecurity,
+  missingSidecars: state.graph.toolbarState.showOutOfMesh,
+
 });
 
 const mapDispatchToProps = (dispatch: KialiDispatch): ReduxDispatchProps => ({
   addMessage: bindActionCreators(NotificationCenterActions.addMessage, dispatch),
   checkCredentials: () => dispatch(LoginThunkActions.checkCredentials()),
   setActiveNamespaces: bindActionCreators(NamespaceActions.setActiveNamespaces, dispatch),
-  setBadgeVS: bindActionCreators(GraphToolbarActions.toggleGraphVirtualServices, dispatch),
+  setAI: bindActionCreators(ChatAIActions.setAI, dispatch),
   setDuration: bindActionCreators(UserSettingsActions.setDuration, dispatch),
   setLandingRoute: bindActionCreators(LoginActions.setLandingRoute, dispatch),
   setNamespaces: bindActionCreators(NamespaceActions.receiveList, dispatch),
   setRefreshInterval: bindActionCreators(UserSettingsActions.setRefreshInterval, dispatch),
+  toggleSecurity: bindActionCreators(GraphToolbarActions.toggleGraphSecurity, dispatch),
+  toggleMissingSidecars: bindActionCreators(GraphToolbarActions.toggleGraphMissingSidecars, dispatch),
   setTracingInfo: bindActionCreators(TracingActions.setInfo, dispatch),
   setTrafficRates: bindActionCreators(GraphToolbarActions.setTrafficRates, dispatch),
-  statusRefresh: bindActionCreators(HelpDropdownActions.statusRefresh, dispatch),
-  setAI: bindActionCreators(ChatAIActions.setAI, dispatch)
+  toggleVirtualService: bindActionCreators(GraphToolbarActions.toggleGraphVirtualServices, dispatch),
+  statusRefresh: bindActionCreators(HelpDropdownActions.statusRefresh, dispatch)
 });
 
 export const AuthenticationController = connect(mapStateToProps, mapDispatchToProps)(AuthenticationControllerComponent);
