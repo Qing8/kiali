@@ -1,4 +1,3 @@
-// Generated-by: OpenAI Codex
 import { act, cleanup, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
