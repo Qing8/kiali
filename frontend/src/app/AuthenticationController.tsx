@@ -351,14 +351,15 @@ class AuthenticationControllerComponent extends React.Component<
       const displayMenu = uiDefaults.graph.displayMenu ?? {};
       const options: Record<
       string, {currentValue:boolean; toggle: ()=>void}>={
-        missingSidecars: {
+        missing_sidecars: {
           currentValue: this.props.missingSidecars,
-          toggle: () => this.props.toggleMissingSidecars
+          toggle: () => this.props.toggleMissingSidecars()
         },
         security: {      
-          currentValue: this.props.missingSidecars,
-          toggle: () => this.props.toggleSecurity},
-        virtualServices: {
+          currentValue: this.props.security,
+          toggle: () => this.props.toggleSecurity()
+        },
+        virtual_services: {
           currentValue: this.props.virtualServices,
           toggle: () => this.props.toggleVirtualService()
         },

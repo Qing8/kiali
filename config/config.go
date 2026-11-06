@@ -1120,11 +1120,7 @@ func NewConfig() (c *Config) {
 			IstioUpgradeAction:    false,
 			UIDefaults: UIDefaults{
 				Graph: GraphUIDefaults{
-					DisplayMenu: GraphDisplayMenu{
-						MissingSideCars: false,
-						VirtualServices: false,
-						Security:        false,
-					},
+					DisplayMenu: GraphDisplayMenu{},
 					FindOptions: []GraphFindOption{
 						{
 							Description: "Find: slow edges (> 1s)",

@@ -35,6 +35,7 @@ export const healthConfig = {
     istioUpgradeAction: false,
     uiDefaults: {
       graph: {
+        displayMenu:{},
         findOptions: [],
         hideOptions: [],
         impl: 'pf',

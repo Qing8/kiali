@@ -98,6 +98,7 @@ export const serverRateConfig = {
     istioUpgradeAction: false,
     uiDefaults: {
       graph: {
+        displayMenu:{},
         findOptions: [],
         hideOptions: [],
         impl: 'pf',
