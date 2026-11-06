@@ -42,7 +42,6 @@ import {
 import { ChatAIActions } from 'actions/ChatAIActions';
 import { initializeLanguage, registerSystemLanguageListener } from 'utils/LanguageUtils';
 import type { AIConfig } from 'types/Chatbot';
-import { GraphToolbar } from 'pages/Graph/GraphToolbar/GraphToolbar';
 
 interface ReduxStateProps {
   authenticated: boolean;

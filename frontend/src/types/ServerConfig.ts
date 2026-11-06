@@ -15,11 +15,7 @@ interface IstioAnnotations {
   istioInjectionAnnotation: string;
 }
 
-interface GraphDisplayMenu {
-  missingSidecars?: boolean;
-  virtualServices?: boolean;
-  security?: boolean;
-}
+type GraphDisplayMenu = Record<string, boolean>;
 
 interface GraphFindOption {
   autoSelect: boolean;
